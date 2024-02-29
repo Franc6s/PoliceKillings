@@ -1,0 +1,99 @@
+---
+title: "Homework_2"
+author: "Francis Mangala"
+output: html_document
+---
+
+## Question 1
+
+```{r}
+library(tidyverse)
+library(dplyr)
+
+police_data<-read.csv("PoliceKillings.csv", header = TRUE)
+police_data%>%head(5)
+```
+
+
+#### a)
+```{r}
+table_data<-police_data%>%
+  group_by(raceethnicity)%>%
+  summarize(Counts=n())%>% mutate (Percent=Counts/nrow(police_data)*100)
+table_data
+
+```
+```{r}
+ggplot(table_data,aes(x=raceethnicity,y=Percent))+
+  geom_bar(stat="identity",fill="Orange")+
+  theme(axis.text.x = element_text(angle=90))+
+  labs(x="Ethnicity",y="% of killings")
+```
+##### Comment:Per the chart, we can conclude that 50% of police victims in 2015 were white males
+
+#### b) 
+```{r}
+age.num = as.numeric(police_data$age)
+
+police_data<-police_data%>%mutate(age.num) 
+police_data%>%head(5)
+```
+
+#### c) 
+```{r}
+ggplot(police_data,aes(x=age.num))+
+  geom_density()+
+  labs(x="Age",y="Density")
+```
+##### Comment:the killing are perpetrated on people aged between 30-40 years old
+
+#### d)
+```{r}
+ggplot(police_data,aes(x=raceethnicity,y=age.num))+
+  geom_boxplot(fill="grey")+
+  labs(x="Ethinicity",y="Age",
+       title="Dist of victims by Ethnicity")+
+  theme(plot.title = element_text(hjust =.5),
+        axis.text.x = element_text(angle=90))
+```
+
+##### e)
+```{r}
+ggplot(police_data,aes(x=raceethnicity,fill=cause))+
+  geom_bar(position = "stack")+
+  labs(x="Race",y="Count")+
+  theme(axis.text.x = element_text(angle=90))
+```
+
+#### f)
+```{r}
+ggplot(police_data,aes(x=age.num,y=county_income,size=pop,color=cause))+
+  geom_point(shape=21,alpha=0.5)+
+  scale_size(range=c(0.1,12))+
+  labs(x="Age",y="County_income", title="")
+```
+
+## Question 2
+
+
+##### a) 
+```{r}
+data_covid<- read.csv("stateCovid.csv",header=TRUE)
+data_covid%>%head(5)
+
+data_pop<- read.csv("State_pop_election.csv",header = TRUE)
+data_pop%>%head(5)
+
+Data_Table<-merge(data_covid,data_pop,by="State")
+Data_Table%>%head(5)
+
+```
+
+##### b)
+```{r}
+ggplot(Data_Table,aes(x=cases,y=Population))+
+  geom_point(shape=21,alpha=0.5)+
+  scale_size(range=c(0.1,12))+
+  labs(x="Cases",y="Population", title="")
+```
+
