@@ -1,2 +1,2 @@
 # PoliceKillings
-Analysis of people killed by police in 2015
+This R code makes a statistical analysis of people killed by police in 2015.
